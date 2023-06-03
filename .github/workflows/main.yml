@@ -27,7 +27,7 @@ jobs:
           GMAIL_RECIPIENT: ${{ secrets.GMAIL_RECIPIENT }}
           DRIVE_JSON: ${{ secrets.DRIVE_JSON }}
           DRIVE_FOLDER: ${{ secrets.DRIVE_FOLDER }}
-        run: Rscript lvmpd_scraper_GITHUB.R
+        run: Rscript lvmpd_cfs_api_GITHUB.R
       
       - name: Add and commit	
         run: |
