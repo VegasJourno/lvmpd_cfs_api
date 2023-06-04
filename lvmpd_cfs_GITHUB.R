@@ -6,8 +6,8 @@ library(janitor)
 library(googledrive)
 library(mailR)
 
-#Create master dataframe
-lvmpd_cfs_master <- NULL
+#Create main dataframe
+lvmpd_cfs_main <- NULL
 
 #Build sequence of days, can only be between 1 and 31. 
 ##This appears to work, even if day isn't represented in dataframe
@@ -51,7 +51,7 @@ for (i in x) {
                              colnames(lvmpd_DF))
   
   #Bind the new scrape's data
-  lvmpd_cfs_master <- rbind(lvmpd_cfs_master, 
+  lvmpd_cfs_main <- rbind(lvmpd_cfs_main, 
                             lvmpd_DF)
   
   #Wait 1 second before running again
@@ -63,7 +63,7 @@ for (i in x) {
 ####
 
 #Fix the date/time columns
-lvmpd_cfs_master <- lvmpd_cfs_master %>% 
+lvmpd_cfs_main <- lvmpd_cfs_main %>% 
   #Get only first 10 characters
   mutate(incident_date = substr(incident_date, 1, 10),
          updated_date = substr(updated_date, 1, 10)) %>% 
@@ -75,7 +75,7 @@ lvmpd_cfs_master <- lvmpd_cfs_master %>%
 
 
 #Drop the columns I don't want for bind later
-lvmpd_cfs_master <- lvmpd_cfs_master %>% 
+lvmpd_cfs_main <- lvmpd_cfs_main %>% 
   select(-c(objectid, day, updated_date))
 
 ####
@@ -92,7 +92,7 @@ lvmpd_cfs_path <- paste0("data/lvmpd_cfs_30day_",
                          ".csv")
 
 #Save output DataFrame
-write.csv(lvmpd_cfs_master, 
+write.csv(lvmpd_cfs_main, 
           lvmpd_cfs_path, 
           row.names=FALSE)
 
@@ -104,17 +104,17 @@ write.csv(lvmpd_cfs_master,
 #Write the CSV name (same as before)
 lvmpd_cfs_2023_path <- "data/lvmpd_cfs_2023.csv"
 
-#Load in Master File from repository
+#Load in Rolling File from repository
 lvmpd_cfs_2023 <- read_csv("data/lvmpd_cfs_2023.csv") %>%
   mutate_all(as.character)
 
 #Make all the data "characters"                      
-lvmpd_cfs_master <- lvmpd_cfs_master %>%
+lvmpd_cfs_main <- lvmpd_cfs_main %>%
   mutate_all(as.character)
 
 #Rbind the newest results to it
 lvmpd_cfs_2023_new <- rbind(lvmpd_cfs_2023,
-                             lvmpd_cfs_master) %>% 
+                             lvmpd_cfs_main) %>% 
   #Delete any repeat requests
   distinct(incident_number, .keep_all = TRUE)
 
@@ -133,7 +133,6 @@ DRIVE_FOLDER <- Sys.getenv("DRIVE_FOLDER")
 googledrive::drive_auth(path = DRIVE_JSON)
 td <- drive_get(DRIVE_FOLDER)
 
-#Upload that Master 2023 CSV to Google drive
 drive_put(lvmpd_cfs_2023_path, 
           name =  "lvmpd_cfs_2023", 
           type = "spreadsheet", 
