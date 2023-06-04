@@ -4,7 +4,7 @@ library(rjson)
 library(httr)
 library(janitor)
 library(googledrive)
-library(mailr)
+library(mailR)
 
 #Create master dataframe
 lvmpd_cfs_master <- NULL
