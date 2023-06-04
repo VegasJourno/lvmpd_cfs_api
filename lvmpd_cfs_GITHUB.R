@@ -99,11 +99,7 @@ write.csv(lvmpd_cfs_master,
 ####
 ####
 ####
-####
-####
-####
-####
-#UPDATE MASTER RESULTS TO GOOGLE DRIVE
+#UPDATE ROLLING 2023 RESULTS ON GITHUB
 
 #Write the CSV name (same as before)
 lvmpd_cfs_2023_path <- "data/lvmpd_cfs_2023.csv"
@@ -126,6 +122,16 @@ lvmpd_cfs_2023_new <- rbind(lvmpd_cfs_2023,
 write.csv(lvmpd_cfs_2023_new, 
           lvmpd_cfs_2023_path, 
           row.names=FALSE)
+
+####
+####
+####
+#UPLOAD ROLLING 2023 RESULTS TO GOOGLE DRIVE
+DRIVE_JSON <- Sys.getenv("DRIVE_JSON")
+DRIVE_FOLDER <- Sys.getenv("DRIVE_FOLDER")
+
+googledrive::drive_auth(path = DRIVE_JSON)
+td <- drive_get(DRIVE_FOLDER)
 
 #Upload that Master 2023 CSV to Google drive
 drive_put(lvmpd_cfs_2023_path, 
