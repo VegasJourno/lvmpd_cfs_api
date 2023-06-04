@@ -70,12 +70,13 @@ lvmpd_cfs_master <- lvmpd_cfs_master %>%
   #Convert into correct date
   mutate(incident_date = as.POSIXct(as.numeric(incident_date), 
                                     origin="1970-01-01")) %>% 
-  mutate(updated_date = as.POSIXct(as.numeric(updated_date), 
-                                   origin="1970-01-01"))
+  #Get into date format for Rbind later
+  mutate(incident_date = ymd_hms(incident_date))
 
-#Drop the objectid columns
+
+#Drop the columns I don't want for bind later
 lvmpd_cfs_master <- lvmpd_cfs_master %>% 
-  select(-objectid)
+  select(-c(objectid, day, updated_date))
 
 ####
 ####
