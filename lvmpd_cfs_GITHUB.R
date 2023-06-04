@@ -81,24 +81,6 @@ lvmpd_cfs_main <- lvmpd_cfs_main %>%
 ####
 ####
 ####
-
-#Save result as a CSV
-currentDate <- Sys.Date() %>% 
-  as.character() %>% 
-  str_replace_all("-","_")
-
-lvmpd_cfs_path <- paste0("data/lvmpd_cfs_30day_",
-                         currentDate,
-                         ".csv")
-
-#Save output DataFrame
-write.csv(lvmpd_cfs_main, 
-          lvmpd_cfs_path, 
-          row.names=FALSE)
-
-####
-####
-####
 #UPDATE ROLLING 2023 RESULTS ON GITHUB
 
 #Write the CSV name (same as before)
