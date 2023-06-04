@@ -99,17 +99,36 @@ write.csv(lvmpd_cfs_master,
 ####
 ####
 ####
+####
+####
+####
+####
+#UPDATE MASTER RESULTS TO GOOGLE DRIVE
 
-#UPLOAD DAILY RESULTS TO GOOGLE DRIVE
-DRIVE_JSON <- Sys.getenv("DRIVE_JSON")
-DRIVE_FOLDER <- Sys.getenv("DRIVE_FOLDER")
+#Write the CSV name (same as before)
+lvmpd_cfs_2023_path <- "data/lvmpd_cfs_2023.csv"
 
-googledrive::drive_auth(path = DRIVE_JSON)
-td <- drive_get(DRIVE_FOLDER)
+#Load in Master File from repository
+lvmpd_cfs_2023 <- read_csv("data/lvmpd_cfs_2023.csv") %>%
+  mutate_all(as.character)
 
-#Export the ALL scrape into Google Drive for historical purposes
-drive_put(lvmpd_cfs_path, 
-          name = 
-            paste0("lvmpd_cfs_30day_", currentDate), 
+#Make all the data "characters"                      
+lvmpd_cfs_master <- lvmpd_cfs_master %>%
+  mutate_all(as.character)
+
+#Rbind the newest results to it
+lvmpd_cfs_2023_new <- rbind(lvmpd_cfs_2023,
+                             lvmpd_cfs_master) %>% 
+  #Delete any repeat requests
+  distinct(incident_number, .keep_all = TRUE)
+
+#Write new CSV for repository
+write.csv(lvmpd_cfs_2023_new, 
+          lvmpd_cfs_2023_path, 
+          row.names=FALSE)
+
+#Upload that Master 2023 CSV to Google drive
+drive_put(lvmpd_cfs_2023_path, 
+          name =  "lvmpd_cfs_2023", 
           type = "spreadsheet", 
           path=as_id(td))
