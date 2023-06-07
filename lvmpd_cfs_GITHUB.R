@@ -119,3 +119,20 @@ drive_put(lvmpd_cfs_2023_path,
           name =  "lvmpd_cfs_2023", 
           type = "spreadsheet", 
           path=as_id(td))
+
+####
+####
+####
+
+#Email notification of success
+send.mail(from = GMAIL_SENDER,
+          to = GMAIL_SENDER,
+          subject = paste0("Github Success: LVMPD CFS Export - ", ExportDateTime),
+          body = "Github Action ran successfully.",
+          smtp = list(host.name = "smtp.gmail.com", port = 465, 
+                      user.name = GMAIL_USER, 
+                      #Generated app password thru Gmail security settings
+                      passwd = GMAIL_PASS, 
+                      ssl = TRUE),
+          authenticate = TRUE,
+          send = TRUE)
