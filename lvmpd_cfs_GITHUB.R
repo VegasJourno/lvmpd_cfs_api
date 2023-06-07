@@ -124,6 +124,12 @@ drive_put(lvmpd_cfs_2023_path,
 ####
 ####
 
+#Read in the environment Secret objects
+GMAIL_SENDER <- Sys.getenv("GMAIL_SENDER")
+GMAIL_RECIPIENT <- Sys.getenv("GMAIL_RECIPIENT")
+GMAIL_USER <- Sys.getenv("GMAIL_USER")
+GMAIL_PASS <- Sys.getenv("GMAIL_PASS")
+
 #Email notification of success
 send.mail(from = GMAIL_SENDER,
           to = GMAIL_SENDER,
