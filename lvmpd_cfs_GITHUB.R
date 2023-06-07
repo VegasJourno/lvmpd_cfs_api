@@ -130,6 +130,10 @@ GMAIL_RECIPIENT <- Sys.getenv("GMAIL_RECIPIENT")
 GMAIL_USER <- Sys.getenv("GMAIL_USER")
 GMAIL_PASS <- Sys.getenv("GMAIL_PASS")
 
+#Get the DateTime that file was exported
+ExportDateTime <- format((Sys.time() - (6*60*60)), 
+                         "%Y-%m-%d_%I%p")
+
 #Email notification of success
 send.mail(from = GMAIL_SENDER,
           to = GMAIL_SENDER,
