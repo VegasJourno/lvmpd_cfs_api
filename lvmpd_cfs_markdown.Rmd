@@ -10,7 +10,6 @@ output: word_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
-library(lubridate)
 
 lvmpd_cfs_main <- read.csv("C:/Users/sdavidson/Downloads/lvmpd_cfs_main.csv")
 

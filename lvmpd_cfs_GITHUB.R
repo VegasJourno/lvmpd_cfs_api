@@ -5,6 +5,11 @@ library(httr)
 library(janitor)
 library(googledrive)
 library(mailR)
+library(rmarkdown)
+
+#Get the DateTime that file was exported
+ExportDateTime <- format((Sys.time() - (6*60*60)), 
+                         "%Y-%m-%d_%I%p")
 
 #Create main dataframe
 lvmpd_cfs_main <- NULL
@@ -124,15 +129,39 @@ drive_put(lvmpd_cfs_2023_path,
 ####
 ####
 
+#RENDER REPORT & SHARE VIA EMAIL
+docx_report_path <- paste0("data/lvmpd_cfs_api_", 
+                           ExportDateTime, 
+                           '.docx', sep='')
+
+rmarkdown::render("lvmpd_cfs_markdown.Rmd",
+                  output_file = docx_report_path)
+
+
+####
+####
+####
+
 #Read in the environment Secret objects
 GMAIL_SENDER <- Sys.getenv("GMAIL_SENDER")
 GMAIL_RECIPIENT <- Sys.getenv("GMAIL_RECIPIENT")
 GMAIL_USER <- Sys.getenv("GMAIL_USER")
 GMAIL_PASS <- Sys.getenv("GMAIL_PASS")
 
-#Get the DateTime that file was exported
-ExportDateTime <- format((Sys.time() - (6*60*60)), 
-                         "%Y-%m-%d_%I%p")
+#Email the Rmarkdown report
+send.mail(from = GMAIL_SENDER,
+          to = c("michaeldmedia@gmail.com", "bclarkson@reviewjournal.com"),
+          subject = paste0("LVMPD CFS Summary - Export: ", ExportDateTime),
+          body = "Summary of LVMPD calls for service data in the past week.",
+          smtp = list(host.name = "smtp.gmail.com", port = 465, 
+                      user.name = GMAIL_USER, 
+                      #Generated app password thru Gmail security settings
+                      passwd = GMAIL_PASS, 
+                      ssl = TRUE),
+          authenticate = TRUE,
+          send = TRUE,
+          attach.files = c(docx_report_path),
+          file.names = c("lvmpd_cfs_summary.docx"))
 
 #Email notification of success
 send.mail(from = GMAIL_SENDER,
