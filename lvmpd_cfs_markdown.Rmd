@@ -11,13 +11,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 
-#lvmpd_cfs_main <- read.csv(lvmpd_cfs_main_path)
+lvmpd_cfs_main <- read.csv(lvmpd_cfs_main_path)
 
 #Get date from 7 days ago
 last_week <- format(Sys.Date()-7,"%m/%d/%Y")
 
 #Read in Data
-lvmpd_cfs_rmd <- lvmpd_cfs_main 
+lvmpd_cfs_rmd <- lvmpd_cfs_main %>% 
   #Filter to just CFS within last week
   filter(incident_date >= mdy(last_week)) %>% 
   #Put newest events first
