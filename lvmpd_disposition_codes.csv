@@ -1,0 +1,21 @@
+﻿disposition_code,disposition_description
+A,Arrested
+B,Citation Issued
+C,Incident / Crime Report (Primary)
+D,"Arrest Made, Incident / Crime Report (Primary)"
+E,"Citation, Incident / Crime Report (Primary)"
+F,Unfounded
+G,Dispatch Called
+H,Gone On Arrival
+I,Unable To Locate
+J,Settled At Scene
+K,Report Taken (Other than Incident / Crime Report)
+L,Handled By Other Jurisdiction
+M,Warning And/Or Subject Advised
+O,False Alarm
+P,Refused To Sign Complaint
+Q,Handled By Unit Other Than Patrol
+R,Radio Broadcast Only
+S,Non-Criminal Detail Complete
+T,Report Taken Under Previous Event Number
+Z,Insurance Report (CAD Event Only)
