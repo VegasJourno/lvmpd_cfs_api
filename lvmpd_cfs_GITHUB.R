@@ -57,7 +57,7 @@ for (i in x) {
   
   #Bind the new scrape's data
   lvmpd_cfs_main <- rbind(lvmpd_cfs_main, 
-                            lvmpd_DF)
+                          lvmpd_DF)
   
   #Wait 1 second before running again
   Sys.sleep(1)
@@ -83,6 +83,16 @@ lvmpd_cfs_main <- lvmpd_cfs_main %>%
 lvmpd_cfs_main <- lvmpd_cfs_main %>% 
   select(-c(objectid, day, updated_date))
 
+##Create the CSV name based on original run date/time
+lvmpd_cfs_main_path <- paste0("data/lvmpd_cfs_",
+                              ExportDateTime,
+                              ".csv")
+
+#Save output DataFrame
+write.csv(lvmpd_cfs_main, 
+          lvmpd_cfs_main_path, 
+          row.names=FALSE)
+
 ####
 ####
 ####
@@ -101,7 +111,7 @@ lvmpd_cfs_main <- lvmpd_cfs_main %>%
 
 #Rbind the newest results to it
 lvmpd_cfs_2023_new <- rbind(lvmpd_cfs_2023,
-                             lvmpd_cfs_main) %>% 
+                            lvmpd_cfs_main) %>% 
   #Delete any repeat requests
   distinct(incident_number, .keep_all = TRUE)
 
