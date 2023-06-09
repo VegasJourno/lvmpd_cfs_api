@@ -1,0 +1,137 @@
+---
+title: "LVMPD CFS Data Summary"
+date: "Export Date: `r format(Sys.time(), '%B %d, %Y')`"
+output: word_document
+---
+
+```{r}
+#| echo=FALSE,
+#| include=FALSE
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(lubridate)
+
+lvmpd_cfs_main <- read.csv("C:/Users/sdavidson/Downloads/lvmpd_cfs_main.csv")
+
+#Get date from 7 days ago
+last_week <- format(Sys.Date()-7,"%m/%d/%Y")
+
+#Read in Data
+lvmpd_cfs_rmd <- read.csv(lvmpd_cfs_path) 
+  #Filter to just CFS within last week
+  filter(incident_date >= mdy(last_week)) %>% 
+  #Put newest events first
+  arrange(desc(incident_date)) %>% 
+  #Get the request_date in a good format for my report
+  mutate(incident_date = as.character(incident_date)) %>% 
+  #Make the incident_number a character
+  mutate(incident_number = as.character(incident_number)) %>% 
+  #Mutate all blanks to NAs
+  mutate_if(is.character, ~na_if(., ''))
+
+#Left Join in the Disposition Code meanings
+lvmpd_cfs_disp <- read.csv("lvmpd_disposition_codes.csv") %>% 
+  select(disposition_code = 1,
+         disposition_description = 2)
+
+lvmpd_cfs_rmd <- merge(lvmpd_cfs_rmd, 
+                        lvmpd_cfs_disp,
+                        by.x = "disposition",
+                        by.y = "disposition_code",
+                        all.x=TRUE)
+###
+###
+
+#Homicide CFS dataframe
+
+#Get 420 codes 
+homicide_calls <- lvmpd_cfs_rmd %>% 
+  filter(str_detect(incident_type_code,"420"))
+
+###
+###
+
+#Las Vegas Strip CFS dataframe
+
+#CFS on relevant blocks on Las Vegas Strip
+lv_strip_blocks <- lvmpd_cfs_rmd %>%
+  #First just filter down to everything with South LV BLVD
+  filter(str_detect(address, "S LAS VEGAS B")) %>% 
+  #Now filter to specific blocks of the of the Blvd using regular expressions
+  ###2000 Block (Strat) to 4900 Block (Right past Mandalay Bay)
+  filter(str_detect(address,
+                    "^2[0-9]00 BLOCK|^3[0-9]00 BLOCK|^4[0-9]00 BLOCK"))
+
+#CFS at the relevant intersections on Las Vegas Strip
+lv_strip_intersections <- lvmpd_cfs_rmd %>%
+  #First just filter down to everything with South LV BLVD
+  filter(str_detect(address, "S LAS VEGAS B")) %>% 
+  #Use the "/" to filter down to intersections
+  filter(str_detect(address, "/")) %>% 
+  #Filter to just calls in Strip ZIP Codes
+  filter(str_detect(zip_code,
+                    "89102|89104|89109|89118|89119|89158"))
+
+#Combine the two
+lv_strip_combined <- rbind(lv_strip_blocks,
+                           lv_strip_intersections) %>% 
+  #Filter to just types of CFS we want
+  filter(str_detect(incident_type_code,
+                    "420|415A|434"))
+```
+
+# Welcome
+
+This document contains a summary of Calls For Service placed to the Las Vegas Metropolitan Police Department **during the past week.** 
+
+Data is sourced from the LVMPD Open Data Portal. Most recent calls are listed first.
+
+**Questions?** Contact LVRJ data editor Michael Scott Davidson at <lvrjautodata@gmail.com>
+
+# Homicide Calls (Code 420)
+
+```{r}
+#| echo=FALSE,
+#| results='asis'
+
+for (i in 1:nrow(homicide_calls)) {
+  
+  cat("## ", homicide_calls$incident_number[i], "\n")
+  
+  cat("* __Incident Type:__", homicide_calls$incident_type_description[i], "\n")
+  
+  cat("* __Date:__", homicide_calls$incident_date[i], "\n")
+  
+  cat("* __Address:__", homicide_calls$address[i], "\n")
+  
+  cat("* __Disposition:__", homicide_calls$disposition_description[i], "\n")
+
+  cat("\n\n\n")
+}
+```
+
+
+
+# Las Vegas Strip - Homicides and Shootings
+## Codes 420, 415A, 434
+
+```{r}
+#| echo=FALSE,
+#| results='asis'
+
+for (i in 1:nrow(lv_strip_combined)) {
+  
+  cat("## ", lv_strip_combined$incident_number[i], "\n")
+  
+  cat("* __Incident Type:__", lv_strip_combined$incident_type_description[i], "\n")
+  
+  cat("* __Date:__", lv_strip_combined$incident_date[i], "\n")
+  
+  cat("* __Address:__", lv_strip_combined$address[i], "\n")
+  
+  cat("* __Disposition:__", lv_strip_combined$disposition_description[i], "\n")
+
+  cat("\n\n\n")
+}
+```
