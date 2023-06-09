@@ -17,7 +17,7 @@ lvmpd_cfs_main <- read.csv(lvmpd_cfs_main_path)
 last_week <- format(Sys.Date()-7,"%m/%d/%Y")
 
 #Read in Data
-lvmpd_cfs_rmd <- read.csv(lvmpd_cfs_path) 
+lvmpd_cfs_rmd <- lvmpd_cfs_main 
   #Filter to just CFS within last week
   filter(incident_date >= mdy(last_week)) %>% 
   #Put newest events first
