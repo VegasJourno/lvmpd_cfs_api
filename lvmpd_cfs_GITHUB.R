@@ -175,7 +175,7 @@ send.mail(from = GMAIL_SENDER,
 
 #Email notification of success
 send.mail(from = GMAIL_SENDER,
-          to = GMAIL_SENDER,
+          to = c("michaeldmedia@gmail.com", "bclarkson@reviewjournal.com"),
           subject = paste0("Github Success: LVMPD CFS Export - ", ExportDateTime),
           body = "Github Action ran successfully.",
           smtp = list(host.name = "smtp.gmail.com", port = 465, 
