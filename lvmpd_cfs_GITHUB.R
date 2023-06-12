@@ -169,9 +169,7 @@ send.mail(from = GMAIL_SENDER,
                       passwd = GMAIL_PASS, 
                       ssl = TRUE),
           authenticate = TRUE,
-          send = TRUE,
-          attach.files = c(docx_report_path),
-          file.names = c("lvmpd_cfs_summary.docx"))
+          send = TRUE)
 
 #Email notification of success
 send.mail(from = GMAIL_SENDER,
