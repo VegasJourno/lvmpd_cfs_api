@@ -171,4 +171,4 @@ send.mail(from = GMAIL_SENDER,
           authenticate = TRUE,
           send = TRUE,
           attach.files = c(docx_report_path),
-          file.names = c("lvmpd_cfs_summary.docx")))
+          file.names = c("lvmpd_cfs_summary.docx"))
