@@ -161,21 +161,8 @@ GMAIL_PASS <- Sys.getenv("GMAIL_PASS")
 #Email the Rmarkdown report
 send.mail(from = GMAIL_SENDER,
           to = GMAIL_SENDER,
-          subject = paste0("LVMPD CFS Summary - Export Email: ", ExportDateTime),
+          subject = paste0("LVMPD CFS Summary - Export Email ", ExportDateTime),
           body = "LVMPD calls for service data in the past week.",
-          smtp = list(host.name = "smtp.gmail.com", port = 465, 
-                      user.name = GMAIL_USER, 
-                      #Generated app password thru Gmail security settings
-                      passwd = GMAIL_PASS, 
-                      ssl = TRUE),
-          authenticate = TRUE,
-          send = TRUE)
-
-#Email notification of success
-send.mail(from = GMAIL_SENDER,
-          to = GMAIL_SENDER,
-          subject = paste0("Github Success: LVMPD CFS Export - ", ExportDateTime),
-          body = "Github Action ran successfully.",
           smtp = list(host.name = "smtp.gmail.com", port = 465, 
                       user.name = GMAIL_USER, 
                       #Generated app password thru Gmail security settings
