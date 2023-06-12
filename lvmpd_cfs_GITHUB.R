@@ -161,7 +161,7 @@ GMAIL_PASS <- Sys.getenv("GMAIL_PASS")
 #Email the Rmarkdown report
 send.mail(from = GMAIL_SENDER,
           to = c("michaeldmedia@gmail.com", "bclarkson@reviewjournal.com"),
-          subject = paste0("Calls For Service LVMPD Export - ", ExportDateTime),
+          subject = paste0("Calls For Service - ", ExportDateTime),
           body = "See attached report.",
           smtp = list(host.name = "smtp.gmail.com", port = 465, 
                       user.name = GMAIL_USER, 
@@ -184,4 +184,6 @@ send.mail(from = GMAIL_SENDER,
                       passwd = GMAIL_PASS, 
                       ssl = TRUE),
           authenticate = TRUE,
-          send = TRUE)
+          send = TRUE,
+          attach.files = c(docx_report_path),
+          file.names = c("lvmpd_cfs_summary.docx"))
