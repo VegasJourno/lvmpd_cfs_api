@@ -20,15 +20,14 @@ last_week <- format(Sys.Date()-7,"%m/%d/%Y")
 lvmpd_cfs_rmd <- lvmpd_cfs_main %>% 
   #Filter to just CFS within last week
   filter(incident_date >= mdy(last_week)) %>% 
-  #Get the request_date in a good format for my report
-  mutate(incident_date = as.character(incident_date)) %>% 
   #Make the incident_number a character
   mutate(incident_number = as.character(incident_number)) %>% 
   #Mutate all blanks to NAs
   mutate_if(is.character, ~na_if(., ''))
 
+
 #Left Join in the Disposition Code meanings
-lvmpd_cfs_disp <- read.csv("lvmpd_disposition_codes.csv") %>% 
+lvmpd_cfs_disp <- read.csv("C:/Users/sdavidson/Desktop/GitHub/lvmpd_cfs_api/lvmpd_disposition_codes.csv") %>% 
   select(disposition_code = 1,
          disposition_description = 2)
 
@@ -37,6 +36,13 @@ lvmpd_cfs_rmd <- merge(lvmpd_cfs_rmd,
                         by.x = "disposition",
                         by.y = "disposition_code",
                         all.x=TRUE)
+
+#Put the dates back in the right order
+lvmpd_cfs_rmd <- lvmpd_cfs_rmd %>% 
+  arrange(desc(incident_date)) %>% 
+  #Get the request_date in a good format for my report
+  mutate(incident_date = as.character(incident_date))
+
 ###
 ###
 
