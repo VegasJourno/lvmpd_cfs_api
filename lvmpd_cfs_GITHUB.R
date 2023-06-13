@@ -81,9 +81,9 @@ lvmpd_cfs_main <- lvmpd_cfs_main %>%
   #Convert into correct date
   mutate(incident_date = as.POSIXct(as.numeric(incident_date), 
                                     origin="1970-01-01")) %>% 
-  #Get into date format for Rbind later
-  mutate(incident_date = ymd_hms(incident_date)) %>% 
-  mutate(incident_date = (incident_date - hrs))
+  #Format to our timezone, includes daylight savings
+  mutate(incident_date = format(incident_date, tz="America/Los_Angeles",usetz=TRUE)) %>% 
+  mutate(incident_date = ymd_hms(incident_date))
 
 
 #Drop the columns I don't want for bind later
