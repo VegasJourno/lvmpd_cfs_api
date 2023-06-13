@@ -3,8 +3,6 @@ options(scipen = 999)
 lvmpd_all <- read.csv("C:/Users/sdavidson/Downloads/LVMPD_Calls_For_Service_All.csv") %>% 
   clean_names()
 
-hrs <- 8 * 60 * 60
-
 lvmpd_all_clean <- lvmpd_all %>% 
   select(incident_number = incidentnumber,
          incident_date = incidentdate,
@@ -51,5 +49,21 @@ lvmpd_2023_clean <- lvmpd_all_clean %>%
 ###
 
 write.csv(lvmpd_2019_clean,
-          "C:/Users/sdavidson/Downloads/LVMPD_Calls_For_Service_All.csv",
+          "C:/Users/sdavidson/Downloads/lvmpd_cfs_2019.csv",
+          row.names = FALSE)
+
+write.csv(lvmpd_2020_clean,
+          "C:/Users/sdavidson/Downloads/lvmpd_cfs_2020.csv",
+          row.names = FALSE)
+
+write.csv(lvmpd_2021_clean,
+          "C:/Users/sdavidson/Downloads/lvmpd_cfs_2021.csv",
+          row.names = FALSE)
+
+write.csv(lvmpd_2022_clean,
+          "C:/Users/sdavidson/Downloads/lvmpd_cfs_2022.csv",
+          row.names = FALSE)
+
+write.csv(lvmpd_2023_clean,
+          "C:/Users/sdavidson/Downloads/lvmpd_cfs_2023.csv",
           row.names = FALSE)
