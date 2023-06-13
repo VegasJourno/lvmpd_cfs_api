@@ -166,7 +166,7 @@ GMAIL_PASS <- Sys.getenv("GMAIL_PASS")
 
 #Email the Rmarkdown report
 #send.mail(from = GMAIL_SENDER,
-          #to = c("michaeldmedia@gmail.com", "bclarkson@reviewjournal.com"),
+          #to = c("crimeteam@reviewjournal.com"),
           #subject = paste0("Calls For Service - ", ExportDateTime),
           #body = "See attached report.",
           #smtp = list(host.name = "smtp.gmail.com", port = 465, 
