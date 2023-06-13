@@ -181,7 +181,7 @@ GMAIL_PASS <- Sys.getenv("GMAIL_PASS")
 
 #Email notification of success
 send.mail(from = GMAIL_SENDER,
-          to = c("michaeldmedia@gmail.com", "bclarkson@reviewjournal.com"),
+          to = c("crimeteam@reviewjournal.com"),
           subject = paste0("LVMPD CFS Export - ", ExportDateTime),
           body = "Github Action ran successfully. See attached report.",
           smtp = list(host.name = "smtp.gmail.com", port = 465, 
