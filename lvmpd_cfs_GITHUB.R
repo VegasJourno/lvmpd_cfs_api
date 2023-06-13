@@ -18,6 +18,9 @@ lvmpd_cfs_main <- NULL
 ##This appears to work, even if day isn't represented in dataframe
 x <- seq(1,31)
 
+#Create 7 hours to subtract, due to UTC time zone
+hrs <- 7 * 60 * 60
+
 ####
 ####
 ####
@@ -76,7 +79,8 @@ lvmpd_cfs_main <- lvmpd_cfs_main %>%
   mutate(incident_date = as.POSIXct(as.numeric(incident_date), 
                                     origin="1970-01-01")) %>% 
   #Get into date format for Rbind later
-  mutate(incident_date = ymd_hms(incident_date))
+  mutate(incident_date = ymd_hms(incident_date)) %>% 
+  mutate(incident_date = (incident_date - hrs))
 
 
 #Drop the columns I don't want for bind later
