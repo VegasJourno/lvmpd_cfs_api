@@ -90,7 +90,7 @@ This document contains a summary of Calls For Service placed to the Las Vegas Me
 
 Data is sourced from the LVMPD Open Data Portal. Most recent calls are listed first.
 
-**Questions?** Contact LVRJ data editor Michael Scott Davidson at <lvrjautodata@gmail.com>
+**Questions?** Contact LVRJ data editor Michael Scott Davidson at <sdavidson@reviewjournal.com>
 
 # Homicide Calls (Code 420)
 
