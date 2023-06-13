@@ -17,7 +17,7 @@ lvmpd_all_clean <- lvmpd_all %>%
          hour,
          month,
          year,
-         zipcode,
+         zip_code,
          geometry_x = x,
          geomtery_y = y) %>% 
   mutate(incident_date = ymd_hms(incident_date)) %>% 
