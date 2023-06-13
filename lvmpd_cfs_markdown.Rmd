@@ -20,8 +20,6 @@ last_week <- format(Sys.Date()-7,"%m/%d/%Y")
 lvmpd_cfs_rmd <- lvmpd_cfs_main %>% 
   #Filter to just CFS within last week
   filter(incident_date >= mdy(last_week)) %>% 
-  #Put newest events first
-  arrange(incident_date) %>% 
   #Get the request_date in a good format for my report
   mutate(incident_date = as.character(incident_date)) %>% 
   #Make the incident_number a character
