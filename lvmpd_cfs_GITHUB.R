@@ -83,8 +83,8 @@ lvmpd_cfs_main <- lvmpd_cfs_main %>%
                                     origin="1970-01-01")) %>% 
   #Format to our timezone, includes daylight savings
   mutate(incident_date = format(incident_date, tz="America/Los_Angeles",usetz=TRUE)) %>% 
-  mutate(incident_date = ymd_hms(incident_date))
-
+  mutate(incident_date = ymd_hms(incident_date)) %>% 
+  arrange(desc(incident_date))
 
 #Drop the columns I don't want for bind later
 lvmpd_cfs_main <- lvmpd_cfs_main %>% 
@@ -99,6 +99,18 @@ lvmpd_cfs_main_path <- paste0("data/lvmpd_cfs_",
 write.csv(lvmpd_cfs_main, 
           lvmpd_cfs_main_path, 
           row.names=FALSE)
+
+####
+####
+####
+
+#RENDER REPORT & SHARE VIA EMAIL
+docx_report_path <- paste0("data/lvmpd_cfs_api_", 
+                           ExportDateTime, 
+                           '.docx', sep='')
+
+rmarkdown::render("lvmpd_cfs_markdown.Rmd",
+                  output_file = docx_report_path)
 
 ####
 ####
@@ -141,19 +153,6 @@ drive_put(lvmpd_cfs_2023_path,
           name =  "lvmpd_cfs_2023", 
           type = "spreadsheet", 
           path=as_id(td))
-
-####
-####
-####
-
-#RENDER REPORT & SHARE VIA EMAIL
-docx_report_path <- paste0("data/lvmpd_cfs_api_", 
-                           ExportDateTime, 
-                           '.docx', sep='')
-
-rmarkdown::render("lvmpd_cfs_markdown.Rmd",
-                  output_file = docx_report_path)
-
 
 ####
 ####
