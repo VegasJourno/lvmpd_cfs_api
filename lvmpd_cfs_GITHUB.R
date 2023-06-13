@@ -21,6 +21,9 @@ x <- seq(1,31)
 #Create 7 hours to subtract, due to UTC time zone
 hrs <- 7 * 60 * 60
 
+#Turn off Scientific Notation
+options(scipen = 999)
+
 ####
 ####
 ####
