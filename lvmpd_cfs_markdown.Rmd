@@ -27,7 +27,7 @@ lvmpd_cfs_rmd <- lvmpd_cfs_main %>%
 
 
 #Left Join in the Disposition Code meanings
-lvmpd_cfs_disp <- read.csv("C:/Users/sdavidson/Desktop/GitHub/lvmpd_cfs_api/lvmpd_disposition_codes.csv") %>% 
+lvmpd_cfs_disp <- read.csv("lvmpd_disposition_codes.csv") %>% 
   select(disposition_code = 1,
          disposition_description = 2)
 
