@@ -19,7 +19,7 @@ lvmpd_all_clean <- lvmpd_all %>%
          year,
          zip_code = zipcode,
          geometry_x = x,
-         geomtery_y = y) %>% 
+         geometry_y = y) %>% 
   mutate(incident_date = ymd_hms(incident_date)) %>% 
   #Format to our timezone, includes daylight savings
   mutate(incident_date = format(incident_date, tz="America/Los_Angeles",usetz=TRUE)) %>% 
