@@ -52,6 +52,9 @@ lvmpd_cfs_rmd <- lvmpd_cfs_rmd %>%
 homicide_calls <- lvmpd_cfs_rmd %>% 
   filter(str_detect(incident_type_code,"420"))
 
+count_homicide_calls <- nrow(homicide_calls) %>% 
+  as.numeric()
+
 ###
 ###
 
@@ -82,6 +85,9 @@ lv_strip_combined <- rbind(lv_strip_blocks,
   #Filter to just types of CFS we want
   filter(str_detect(incident_type_code,
                     "420|415A|434"))
+
+count_lv_strip_combined  <- nrow(lv_strip_combined) %>% 
+  as.numeric()
 ```
 
 # Welcome
@@ -94,9 +100,7 @@ Data is sourced from the LVMPD Open Data Portal. Most recent calls are listed fi
 
 # Homicide Calls (Code 420)
 
-```{r}
-#| echo=FALSE,
-#| results='asis'
+```{r}{r homicide_conditional_block_1, echo=FALSE, results='asis', eval= count_homicide_calls > 0}
 
 for (i in 1:nrow(homicide_calls)) {
   
@@ -114,14 +118,14 @@ for (i in 1:nrow(homicide_calls)) {
 }
 ```
 
-
+```{r homicide_conditional_block_2, echo=FALSE, results='asis', eval= count_homicide_calls < 1}
+cat("__None Of These CFS Reported Today__ \n \n")
+```
 
 # Las Vegas Strip - Homicides and Shootings
 ## Codes 420, 415A, 434
 
-```{r}
-#| echo=FALSE,
-#| results='asis'
+```{r}{r strip_conditional_block_1, echo=FALSE, results='asis', eval= count_lv_strip_combined > 0}
 
 for (i in 1:nrow(lv_strip_combined)) {
   
@@ -137,4 +141,8 @@ for (i in 1:nrow(lv_strip_combined)) {
 
   cat("\n\n\n")
 }
+```
+
+```{r strip_conditional_block_2, echo=FALSE, results='asis', eval= count_lv_strip_combined < 1}
+cat("__None Of These CFS Reported Today__ \n \n")
 ```
