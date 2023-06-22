@@ -158,7 +158,7 @@ knitr::knit2html("lvmpd_cfs_markdown.Rmd",options="")
 
 #Email notification of success
 send.mail(from = GMAIL_SENDER,
-          to = GMAIL_SENDER,
+          to = c("crimeteam@reviewjournal.com"),
           subject = paste0("LVMPD CFS Export - ", ExportDateTime),
           body = "lvmpd_cfs_markdown.html",
           html = TRUE,
