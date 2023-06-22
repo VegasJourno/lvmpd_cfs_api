@@ -103,18 +103,6 @@ write.csv(lvmpd_cfs_main,
 ####
 ####
 ####
-
-#RENDER REPORT & SHARE VIA EMAIL
-docx_report_path <- paste0("data/lvmpd_cfs_api_", 
-                           ExportDateTime, 
-                           '.docx', sep='')
-
-rmarkdown::render("lvmpd_cfs_markdown.Rmd",
-                  output_file = docx_report_path)
-
-####
-####
-####
 #UPDATE ROLLING 2023 RESULTS ON GITHUB
 
 #Write the CSV name (same as before)
@@ -164,32 +152,25 @@ GMAIL_RECIPIENT <- Sys.getenv("GMAIL_RECIPIENT")
 GMAIL_USER <- Sys.getenv("GMAIL_USER")
 GMAIL_PASS <- Sys.getenv("GMAIL_PASS")
 
-#Email the Rmarkdown report
-#send.mail(from = GMAIL_SENDER,
-          #to = c("crimeteam@reviewjournal.com"),
-          #subject = paste0("Calls For Service - ", ExportDateTime),
-          #body = "See attached report.",
-          #smtp = list(host.name = "smtp.gmail.com", port = 465, 
-                      #user.name = GMAIL_USER, 
-                      #Generated app password thru Gmail security settings
-                      #passwd = GMAIL_PASS, 
-                      #ssl = TRUE),
-          #authenticate = TRUE,
-          #send = TRUE,
-          #attach.files = c(docx_report_path),
-          #file.names = c("lvmpd_cfs_summary.docx"))
+
+#RENDER REPORT & SHARE VIA EMAIL
+knitr::knit2html("lvmpd_cfs_markdown.Rmd",options="")
 
 #Email notification of success
 send.mail(from = GMAIL_SENDER,
           to = c("crimeteam@reviewjournal.com"),
-          subject = paste0("LVMPD CFS Export - ", ExportDateTime),
-          body = "Github Action ran successfully. See attached report.",
+          subject = paste0("LVMPD Booking Export - ", currentDate),
+          body = "lvmpd_cfs_markdown.html",
+          html = TRUE,
+          inline = TRUE,
           smtp = list(host.name = "smtp.gmail.com", port = 465, 
                       user.name = GMAIL_USER, 
                       #Generated app password thru Gmail security settings
                       passwd = GMAIL_PASS, 
                       ssl = TRUE),
           authenticate = TRUE,
-          send = TRUE,
-          attach.files = c(docx_report_path),
-          file.names = c("lvmpd_cfs_summary.docx"))
+          send = TRUE)
+
+#Delete HTML files created
+unlink("lvmpd_cfs_markdown.html")
+unlink("lvmpd_cfs_markdown.md")
